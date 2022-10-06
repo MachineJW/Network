@@ -1,0 +1,45 @@
+윈도우 모스키토 서버 셋팅
+https://mosquitto.org/download/
+mosquitto-2.0.14-install-windows-x64.exe
+체크 다하고( 디폴트)
+경로 그대로 
+
+1. 설치된 경로에서 mosquitto.conf 파일을 
+메모장 또는 워드패드 관리자 권한 실행,
+설치된 경로로 열기 mosquitto.conf  파일( 파일이 안보일 경우 파일 이름 옆에 모든 문서로 변경)
+
+
+
+2. 변경: listener 1883 , allow_anonymous true;
+
+변경전 :
+# listener port-number [ip address/host name/unix socket path]
+#listener
+
+변경후 :
+# listener port-number [ip address/host name/unix socket path]
+listener 1883
+
+변경전 :
+#allow_anonymous false
+
+변경후 :
+allow_anonymous true
+후 저장
+
+3. 윈도우창에서 방화벽 검색 -> 방화벽 및 네트워크 보호 클릭 -> 고급설정
+인바운드 규칙 -> 새규칙 -> 포트 체크 후 다음 -> TCP/ 특정로컬 포트 1883 포트 추가
+ -> 연결 허용 체크(디폴트) -> 도메인, 개인, 공용 모두 체크(디폴트) -> 이름은 MQTT(바뀌어도됨)
+
+4. 윈도우 서비스 -> mosquitto -> 재시작(혹은 시작) 
+재시작하고 안되다 중지하고 아래 명령어로 실행 가능
+
+5. cmd 관리자 실행 후 모스키토 경로에서
+$ cd C:\Program Files\mosquitto (설치 파일 경로에 따라 변경됨)
+$ mosquitto -c mosquitto.conf -v
+
+6. 마지막으로 또 다른 cmd에서 해당 명령어로 내부 네트워크의 1883 포트 열렸는지 확인.
+$ netstat -an
+#
+  TCP    [::]:1883              [::]:0                 LISTENING
+#
